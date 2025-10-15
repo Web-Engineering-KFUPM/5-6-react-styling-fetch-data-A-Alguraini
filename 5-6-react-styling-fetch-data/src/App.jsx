@@ -358,15 +358,16 @@ const handleCloseModal = () => { setShowModal(false); setSelectedUser(null); }
             <UserList users={users} onUserClick={handleUserClick} />
 
          </Container>
+
       <UserModal show={showModal} user={selectedUser} onHide={handleCloseModal} />
 
-         
+          
 
 
       <footer className="bg-light py-4 mt-5">
         <Container>
           <p className="text-center text-muted mb-0">
-            &copy; 2025 User Management Dashboard
+            &copy; 2024 User Management Dashboard
           </p>
         </Container>
       </footer>
