@@ -328,16 +328,18 @@ function App() {
    const [showModal, setShowModal] = useState(false)
    const [users, setUsers] = useState([])
 
-  useEffect(() => {
-    {/*API fetch logic*/}
+//   useEffect(() => {
+//     {/*API fetch logic*/}
 
-  }, [])
+//   }, [])
 
-  const handleUserClick = (user) => {
-  }
+//   const handleUserClick = (user) => {
+//   }
 
-  const handleCloseModal = () => {
-  }
+//   const handleCloseModal = () => {
+//   }
+const handleUserClick = (user) => { setSelectedUser(user); setShowModal(true); }
+const handleCloseModal = () => { setShowModal(false); setSelectedUser(null); }
 
   return (
     <div className="app">
@@ -352,7 +354,12 @@ function App() {
          <Container className="mb-4">
             {/* {loading && <Spinner ... />} */}
             {/* {error && <Alert ...>{error}</Alert>} */}
+            <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+            <UserList users={users} onUserClick={handleUserClick} />
+
          </Container>
+      <UserModal show={showModal} user={selectedUser} onHide={handleCloseModal} />
+
          
 
 

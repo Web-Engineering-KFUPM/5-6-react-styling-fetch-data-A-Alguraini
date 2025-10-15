@@ -5,7 +5,7 @@ function SearchBar({ searchTerm, onSearchChange }) {
   return (
     <div className="mb-4">
       <InputGroup>
-        <InputGroup.Text>🔍</InputGroup.Text>
+        <InputGroup.Text></InputGroup.Text>
         <Form.Control
           placeholder="Search by name..."
           type="text"
