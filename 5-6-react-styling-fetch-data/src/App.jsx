@@ -323,23 +323,56 @@ import SearchBar from './components/SearchBar'
 import UserModal from './components/UserModal'
 
 function App() {
-   const [searchTerm, setSearchTerm] = useState('')
-   const [selectedUser, setSelectedUser] = useState(null)
-   const [showModal, setShowModal] = useState(false)
-   const [users, setUsers] = useState([])
+   const [users, setUsers] = useState([]);
+   const [filteredUsers, setFilteredUsers] = useState([]);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState(null);
+   const [searchTerm, setSearchTerm] = useState('');
+   const [showModal, setShowModal] = useState(false);
+   const [selectedUser, setSelectedUser] = useState(null);
 
-//   useEffect(() => {
-//     {/*API fetch logic*/}
+useEffect(() => {
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('https://jsonplaceholder.typicode.com/users');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setUsers(data);
+      setFilteredUsers(data);
+    } catch (err) {
+      setError(err.message || 'Failed to load users');
+    } finally {
+      setLoading(false);
+    }
+  };
+  load();
+}, []);
 
-//   }, [])
-
+useEffect(() => {
+  const term = searchTerm.trim().toLowerCase();
+  if (!term) {
+    setFilteredUsers(users);
+  } else {
+    setFilteredUsers(
+      users.filter(u => u.name.toLowerCase().includes(term))
+    );
+  }
+}, [searchTerm, users]);
 //   const handleUserClick = (user) => {
 //   }
 
 //   const handleCloseModal = () => {
 //   }
-const handleUserClick = (user) => { setSelectedUser(user); setShowModal(true); }
-const handleCloseModal = () => { setShowModal(false); setSelectedUser(null); }
+const handleUserClick = (user) => {
+  setSelectedUser(user);
+  setShowModal(true);
+};
+const handleCloseModal = () => {
+  setShowModal(false);
+  setSelectedUser(null);
+};
 
   return (
     <div className="app">
@@ -352,12 +385,17 @@ const handleCloseModal = () => { setShowModal(false); setSelectedUser(null); }
 
 
          <Container className="mb-4">
-            {/* {loading && <Spinner ... />} */}
-            {/* {error && <Alert ...>{error}</Alert>} */}
-            <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-            <UserList users={users} onUserClick={handleUserClick} />
+         {loading && <Spinner animation="border" role="status" />}
+         {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
 
+         {!loading && !error && (
+            <>
+               <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+               <UserList users={filteredUsers} onUserClick={handleUserClick} />
+            </>
+         )}
          </Container>
+
 
       <UserModal show={showModal} user={selectedUser} onHide={handleCloseModal} />
 
