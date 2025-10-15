@@ -2,6 +2,8 @@ import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 
 function UserCard({ user, onUserClick }) {
+  const letter = user?.name ? user.name.charAt(0) : '?';
+
   return (
     <Card className="user-card">
       <Card.Body>
@@ -18,6 +20,9 @@ function UserCard({ user, onUserClick }) {
           <strong>Phone:</strong> {user.phone}
         </Card.Text>
       {/* Buttotn*/}
+        <Button variant="primary" onClick={() => onUserClick(user)}>
+          View Details
+        </Button>
       
       </Card.Body>
     </Card>
